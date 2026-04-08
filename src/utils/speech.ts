@@ -2,7 +2,7 @@ export function isSpeechRecognitionSupported(): boolean {
   return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
 }
 
-export function createSpeechRecognition(): SpeechRecognition | null {
+export function createSpeechRecognition(): any | null {
   if (!isSpeechRecognitionSupported()) return null;
   const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
