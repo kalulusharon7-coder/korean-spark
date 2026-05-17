@@ -18,6 +18,7 @@
 import { useParams, useLocation } from "wouter";
 import { useAuth } from "@clerk/react";
 import { useEffect, useState, useRef } from "react";
+import { speakKorean } from "../lib/koreanTTS";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "/api";
 
@@ -42,15 +43,6 @@ function shuffleIndices(n: number): number[] {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
-}
-
-function speakKorean(text: string) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = "ko-KR";
-  utt.rate = 0.85;
-  window.speechSynthesis.speak(utt);
 }
 
 export default function MatchAudioPage() {

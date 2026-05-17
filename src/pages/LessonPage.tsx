@@ -1,6 +1,7 @@
 import { useParams, useLocation } from "wouter";
 import { useAuth } from "@clerk/react";
 import { useEffect, useState, useCallback, useRef } from "react";
+import { speakKorean } from "../lib/koreanTTS";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 const API_BASE = import.meta.env.VITE_API_URL ?? "/api";
@@ -480,15 +481,12 @@ function WordCard({ word }: { word: { ko: string; en: string } }) {
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   const speak = useCallback(() => {
-    if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(word.ko);
-    utter.lang = "ko-KR";
-    utter.rate = 0.75;
-    utter.onstart = () => setPlaying(true);
-    utter.onend = () => setPlaying(false);
-    utter.onerror = () => setPlaying(false);
-    window.speechSynthesis.speak(utter);
+    void speakKorean(word.ko, {
+      rate: 0.75,
+      onStart: () => setPlaying(true),
+      onEnd: () => setPlaying(false),
+      onError: () => setPlaying(false),
+    });
   }, [word.ko]);
 
   const startRecord = useCallback(() => {
@@ -622,15 +620,12 @@ function SentenceCard({ s, n, progress, onEvaluate, onReset, onBreakEnd }: Sente
   const showHelp = attempts >= 4 && !onBreak && troubleSyllables.length > 0;
 
   const speak = useCallback(() => {
-    if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(s.ko);
-    utter.lang = "ko-KR";
-    utter.rate = 0.82;
-    utter.onstart = () => setPlaying(true);
-    utter.onend = () => setPlaying(false);
-    utter.onerror = () => setPlaying(false);
-    window.speechSynthesis.speak(utter);
+    void speakKorean(s.ko, {
+      rate: 0.82,
+      onStart: () => setPlaying(true),
+      onEnd: () => setPlaying(false),
+      onError: () => setPlaying(false),
+    });
   }, [s.ko]);
 
   const startRecord = useCallback(() => {

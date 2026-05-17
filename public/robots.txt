@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ktvault.uk/sitemap.xml

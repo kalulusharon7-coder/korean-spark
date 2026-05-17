@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { useUser, useClerk } from "@clerk/react";
+import { speakKorean } from "../lib/koreanTTS";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -80,17 +81,6 @@ function composeSyllable(initial: string, medial: string, finalC: string): strin
   const f = FINALS.indexOf(finalC);
   if (i < 0 || m < 0 || f < 0) return null;
   return String.fromCharCode(0xac00 + (i * 21 + m) * 28 + f);
-}
-
-/* ─────────────────────── Speech (uses browser TTS) ─────────────────────── */
-
-function speakKorean(text: string) {
-  if (!text || typeof window === "undefined" || !("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "ko-KR";
-  u.rate = 0.85;
-  window.speechSynthesis.speak(u);
 }
 
 /* ─────────────────────── Small mini-dictionary of real words ─────────────────────── */
