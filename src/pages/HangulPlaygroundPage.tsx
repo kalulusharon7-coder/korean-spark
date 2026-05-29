@@ -564,7 +564,11 @@ function DoubleBatchimSection() {
           <div style={batchimCharColStyle}>
             <div style={{ fontSize: "3rem", lineHeight: 1, color: "var(--kt-cream-light)", fontWeight: 500 }}>{b.ch}</div>
             <div style={{ fontSize: "0.75rem", color: "var(--kt-cream-muted)", marginTop: "0.25rem" }}>{b.parts}</div>
-            <button onClick={() => speakKorean(b.example)} style={{ ...playBtnStyle, marginTop: "0.6rem", padding: "0.35rem 0.7rem", fontSize: "0.78rem" }}>
+            <button
+              onClick={() => speakKorean(b.example)}
+              aria-label={`Play pronunciation of ${b.example} (${b.exampleMeaning})`}
+              style={{ ...playBtnStyle, marginTop: "0.6rem", padding: "0.35rem 0.7rem", fontSize: "0.78rem" }}
+            >
               ▶ {b.example}
             </button>
             <div style={{ fontSize: "0.72rem", color: "var(--kt-cream-muted)", opacity: 0.8, marginTop: "0.3rem" }}>{b.exampleMeaning}</div>
