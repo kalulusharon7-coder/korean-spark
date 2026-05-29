@@ -69,6 +69,101 @@ const COMPOUND_VOWELS: Jamo[] = [
   { ch: "ㅢ", name: "의 (ui)", sound: "uy", english: "eu + i blended", example: "의자", exampleMeaning: "chair" },
 ];
 
+/* ─── Double batchim (final consonant clusters) — idiot + fancy versions ─── */
+
+type DoubleBatchim = {
+  ch: string;
+  parts: string;
+  main: string;
+  ghost: string;
+  feels: string;
+  like: string;
+  fancy: string;
+  fancyNote: string;
+  example: string;
+  exampleMeaning: string;
+};
+
+const DOUBLE_BATCHIM: DoubleBatchim[] = [
+  {
+    ch: "ㄳ", parts: "ㄱ + ㅅ", main: "k", ghost: "a tiny hiss of air",
+    feels: "k + a little “sss-air” at the end",
+    like: "Like you’re trying to say “kss” but stop halfway.",
+    fancy: "kʼ", fancyNote: "sharp release",
+    example: "몫", exampleMeaning: "share / portion",
+  },
+  {
+    ch: "ㄵ", parts: "ㄴ + ㅈ", main: "n", ghost: "tongue wants to make a “j” but doesn’t",
+    feels: "n + tongue pushing up a bit",
+    like: "Like your tongue is getting ready to say “j” but doesn’t.",
+    fancy: "nʲ", fancyNote: "palatal tension",
+    example: "앉다", exampleMeaning: "to sit",
+  },
+  {
+    ch: "ㄶ", parts: "ㄴ + ㅎ", main: "n", ghost: "a soft breath",
+    feels: "n + a tiny “h-breath”",
+    like: "Like you sigh a little after saying “n.”",
+    fancy: "nʰ", fancyNote: "breathy n",
+    example: "많다", exampleMeaning: "to be many",
+  },
+  {
+    ch: "ㄺ", parts: "ㄹ + ㄱ", main: "k", ghost: "tongue presses like an “L” first",
+    feels: "L-shape → k",
+    like: "Like your tongue taps the roof, then drops into a “k.”",
+    fancy: "lk → k", fancyNote: "tongue tension → k",
+    example: "닭", exampleMeaning: "chicken",
+  },
+  {
+    ch: "ㄻ", parts: "ㄹ + ㅁ", main: "m", ghost: "tongue touches like an “L”",
+    feels: "L-shape → m",
+    like: "Like you start to say “L” but close your lips for “m.”",
+    fancy: "lm → m", fancyNote: "dark L → m",
+    example: "삶", exampleMeaning: "life",
+  },
+  {
+    ch: "ㄼ", parts: "ㄹ + ㅂ", main: "l", ghost: "lips tighten like a “b”",
+    feels: "L → lips squeeze → l",
+    like: "Like your lips want to make a “b,” but don’t.",
+    fancy: "lb → l", fancyNote: "labial tension",
+    example: "넓다", exampleMeaning: "to be wide",
+  },
+  {
+    ch: "ㄽ", parts: "ㄹ + ㅅ", main: "p", ghost: "a tiny “s-air”",
+    feels: "p + sharp air",
+    like: "Like a mini “psh” but cut short.",
+    fancy: "lp → pʼ", fancyNote: "tense p",
+    example: "곬", exampleMeaning: "channel / one way",
+  },
+  {
+    ch: "ㄾ", parts: "ㄹ + ㅌ", main: "l", ghost: "a puff of air",
+    feels: "l + tiny “t-air”",
+    like: "Like your tongue taps for “l” and then you blow a little.",
+    fancy: "lt → lʰ", fancyNote: "aspirated l",
+    example: "핥다", exampleMeaning: "to lick",
+  },
+  {
+    ch: "ㄿ", parts: "ㄹ + ㅍ", main: "l", ghost: "lips push like “p”",
+    feels: "l + lip-push",
+    like: "Like your lips prepare to pop but don’t.",
+    fancy: "lp → lʰ", fancyNote: "p-burst influence",
+    example: "읊다", exampleMeaning: "to recite",
+  },
+  {
+    ch: "ㅀ", parts: "ㄹ + ㅎ", main: "l", ghost: "breath",
+    feels: "l + soft “h-breath”",
+    like: "Like you whisper after saying “l.”",
+    fancy: "lʰ", fancyNote: "breathy l",
+    example: "싫다", exampleMeaning: "to dislike",
+  },
+  {
+    ch: "ㅄ", parts: "ㅂ + ㅅ", main: "p", ghost: "sharp “s-air”",
+    feels: "p + sharp air",
+    like: "Like a tiny “ps!” but cut short.",
+    fancy: "ps → pʼ", fancyNote: "sharp p",
+    example: "값", exampleMeaning: "price",
+  },
+];
+
 /* ─────── Jamo indices for Hangul syllable composition (Unicode AC00) ─────── */
 
 const INITIALS = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"];
@@ -259,8 +354,8 @@ export default function HangulPlaygroundPage() {
                 </div>
               )}
             </div>
-            <button onClick={() => speakKorean(selectedJamo.example ?? selectedJamo.ch)} style={playBtnStyle}>
-              ▶ Hear
+            <button onClick={() => speakKorean(selectedJamo.ch)} style={playBtnStyle}>
+              ▶ Hear sound
             </button>
           </div>
         )}
@@ -338,8 +433,16 @@ export default function HangulPlaygroundPage() {
           </div>
         </div>
 
-        {/* ─── Section 4: Notes ─── */}
-        <SectionTitle label="04" title="Quick Notes" sub="A few things that trip up new readers." />
+        {/* ─── Section 4: Double Batchim ─── */}
+        <SectionTitle
+          label="04"
+          title="Double Batchim"
+          sub="When two consonants stack at the bottom of a syllable, only one fully speaks — the other becomes a tiny ghost-sound that pushes, breathes, or nudges. Read the simple “Idiot” version, peek at the “Fancy” phonetics, and tap to hear a real word."
+        />
+        <DoubleBatchimSection />
+
+        {/* ─── Section 5: Notes ─── */}
+        <SectionTitle label="05" title="Quick Notes" sub="A few things that trip up new readers." />
         <ul style={notesListStyle}>
           <li><strong style={{ color: "#6daa7c" }}>ㅇ is silent at the start.</strong> It's a placeholder so every syllable has an initial consonant — 아 sounds like "a", not "nga".</li>
           <li><strong style={{ color: "#6daa7c" }}>ㅇ at the end sounds like "ng".</strong> 강 = "gang" (river).</li>
@@ -381,32 +484,32 @@ function JamoGrid({
       <div style={{ fontSize: "0.8rem", color: accent, marginBottom: "0.5rem", fontWeight: 600 }}>{title}</div>
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(78px, 1fr))",
-        gap: "0.5rem",
+        gridTemplateColumns: "repeat(auto-fill, minmax(92px, 1fr))",
+        gap: "0.6rem",
       }}>
         {jamos.map((j) => (
           <button
             key={j.ch}
-            onClick={() => { onSelect(j); speakKorean(j.example ?? j.ch); }}
+            onClick={() => { onSelect(j); speakKorean(j.ch); }}
             style={{
-              padding: "0.85rem 0.5rem 0.6rem",
-              background: "rgba(20,28,22,0.45)",
-              border: "1px solid rgba(200,185,154,0.18)",
+              padding: "1.1rem 0.5rem 0.8rem",
+              background: "rgba(28,38,30,0.7)",
+              border: "1px solid rgba(200,185,154,0.3)",
               borderRadius: "8px",
               cursor: "pointer",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "0.2rem",
+              gap: "0.3rem",
               transition: "border-color 0.15s ease, transform 0.1s ease",
               color: "var(--kt-cream-light)",
               fontFamily: "inherit",
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = accent; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(200,185,154,0.18)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(200,185,154,0.3)"; }}
           >
-            <span style={{ fontSize: "1.7rem", lineHeight: 1 }}>{j.ch}</span>
-            <span style={{ fontSize: "0.65rem", color: "var(--kt-cream-muted)", opacity: 0.85 }}>{j.sound}</span>
+            <span style={{ fontSize: "2.4rem", lineHeight: 1, color: "var(--kt-cream-light)", fontWeight: 500 }}>{j.ch}</span>
+            <span style={{ fontSize: "0.74rem", color: "var(--kt-cream-light)", opacity: 0.9 }}>{j.sound}</span>
           </button>
         ))}
       </div>
@@ -451,7 +554,110 @@ function JamoPicker({
   );
 }
 
+function DoubleBatchimSection() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+      {/* Column headers (hidden on narrow screens, they re-label per card) */}
+      {DOUBLE_BATCHIM.map((b) => (
+        <div key={b.ch} style={batchimCardStyle}>
+          {/* Character header */}
+          <div style={batchimCharColStyle}>
+            <div style={{ fontSize: "3rem", lineHeight: 1, color: "var(--kt-cream-light)", fontWeight: 500 }}>{b.ch}</div>
+            <div style={{ fontSize: "0.75rem", color: "var(--kt-cream-muted)", marginTop: "0.25rem" }}>{b.parts}</div>
+            <button onClick={() => speakKorean(b.example)} style={{ ...playBtnStyle, marginTop: "0.6rem", padding: "0.35rem 0.7rem", fontSize: "0.78rem" }}>
+              ▶ {b.example}
+            </button>
+            <div style={{ fontSize: "0.72rem", color: "var(--kt-cream-muted)", opacity: 0.8, marginTop: "0.3rem" }}>{b.exampleMeaning}</div>
+          </div>
+
+          {/* Side-by-side: Idiot version + Fancy version */}
+          <div style={batchimPanelsStyle}>
+            {/* Idiot version */}
+            <div style={idiotPanelStyle}>
+              <div style={panelLabelStyle("#6daa7c")}>Idiot version 🤫</div>
+              <div style={{ fontSize: "0.85rem", color: "var(--kt-cream-light)", lineHeight: 1.55 }}>
+                <div>Main sound: <strong style={{ color: "#6daa7c" }}>{b.main}</strong></div>
+                <div style={{ color: "var(--kt-cream-muted)" }}>Ghost sound: {b.ghost}</div>
+                <div style={{ marginTop: "0.4rem" }}>👉 Feels like: <strong>{b.feels}</strong></div>
+                <div style={{ marginTop: "0.3rem", fontStyle: "italic", color: "var(--kt-cream-muted)" }}>{b.like}</div>
+              </div>
+            </div>
+
+            {/* Fancy version */}
+            <div style={fancyPanelStyle}>
+              <div style={panelLabelStyle("#aa7c9a")}>Fancy version 🤔</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
+                <span style={{ fontSize: "1.5rem", color: "#c9a8c4", fontWeight: 600, fontFamily: "monospace" }}>{b.fancy}</span>
+                <span style={{ fontSize: "0.8rem", color: "var(--kt-cream-muted)" }}>{b.fancyNote}</span>
+              </div>
+              <div style={{ fontSize: "0.72rem", color: "var(--kt-cream-muted)", opacity: 0.7, marginTop: "0.5rem" }}>
+                micro-sound note (the technical effect)
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ───────────────────────── Styles ───────────────────────── */
+
+const batchimCardStyle: React.CSSProperties = {
+  display: "flex",
+  gap: "1rem",
+  padding: "1rem",
+  background: "rgba(20,28,22,0.5)",
+  border: "1px solid rgba(200,185,154,0.18)",
+  borderRadius: "12px",
+  flexWrap: "wrap",
+  alignItems: "stretch",
+};
+
+const batchimCharColStyle: React.CSSProperties = {
+  width: "120px",
+  flexShrink: 0,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+  padding: "0.5rem",
+  background: "rgba(45,74,50,0.2)",
+  border: "1px dashed rgba(109,170,124,0.4)",
+  borderRadius: "10px",
+};
+
+const batchimPanelsStyle: React.CSSProperties = {
+  flex: 1,
+  minWidth: "240px",
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+  gap: "0.75rem",
+};
+
+const idiotPanelStyle: React.CSSProperties = {
+  padding: "0.85rem 1rem",
+  background: "rgba(109,170,124,0.1)",
+  border: "1px solid rgba(109,170,124,0.4)",
+  borderRadius: "10px",
+};
+
+const fancyPanelStyle: React.CSSProperties = {
+  padding: "0.85rem 1rem",
+  background: "rgba(170,124,154,0.08)",
+  border: "1px solid rgba(170,124,154,0.3)",
+  borderRadius: "10px",
+};
+
+const panelLabelStyle = (color: string): React.CSSProperties => ({
+  fontSize: "0.7rem",
+  letterSpacing: "0.1em",
+  textTransform: "uppercase",
+  fontWeight: 700,
+  color,
+  marginBottom: "0.5rem",
+});
 
 const detailPanelStyle: React.CSSProperties = {
   display: "flex",
