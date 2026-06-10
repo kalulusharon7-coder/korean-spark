@@ -878,6 +878,31 @@ export default function LessonPage() {
     }
   }, [progressArr, lessonId]);
 
+  // Persist completion to the server (per-account, cross-device) once all
+  // sentences pass. Guarded so it only posts a single time per page load.
+  const progressPostedRef = useRef(false);
+  useEffect(() => {
+    const allDone = progressArr.length > 0 && progressArr.every((p) => p.bestScore >= 60);
+    if (!allDone || progressPostedRef.current || !isSignedIn) return;
+    progressPostedRef.current = true;
+    (async () => {
+      try {
+        const token = await getToken();
+        if (!token) return;
+        await fetch(`${API_BASE}/progress/update`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ lessonId, completed: true }),
+        });
+      } catch {
+        /* progress is best-effort; localStorage keeps a local copy */
+      }
+    })();
+  }, [progressArr, isSignedIn, lessonId, getToken]);
+
   const handleEvaluate = useCallback(
     (sentenceIdx: number, score: number, colour: ScoreColour, heard: string, trouble: string[]) => {
       setProgressArr((prev) => {

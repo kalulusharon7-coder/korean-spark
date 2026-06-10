@@ -1,3 +1,36 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1a2b1e"/>
+      <stop offset="0.55" stop-color="#111210"/>
+      <stop offset="1" stop-color="#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="36" y1="40" x2="150" y2="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2ebe0"/>
+      <stop offset="0.35" stop-color="#e0c48c"/>
+      <stop offset="1" stop-color="#c9a86c"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="180" height="180" rx="40" fill="url(#bg)"/>
+  <rect x="6" y="6" width="168" height="168" rx="34" fill="none" stroke="#c9a86c" stroke-opacity="0.45" stroke-width="2"/>
+
+  <g fill="url(#gold)">
+    <!-- K thick stem (downstroke, swelled + tapered) -->
+    <path d="M52 47 C56 48 59 51 58 57 C56 78 55 100 51 124 C50 131 48 135 46 135 C44 135 43 131 43 126 C46 102 47 80 49 60 C49 53 49 47 52 47 Z"/>
+    <!-- K lower leg (thick downstroke diagonal) -->
+    <path d="M48 85 C50 83 53 84 55 86 C73 100 89 113 107 129 C111 132 111 136 108 137 C105 138 101 135 98 133 C82 121 65 108 49 96 C45 93 45 88 48 85 Z"/>
+    <!-- T thick stem (downstroke) with bottom curl flourish -->
+    <path d="M118 51 C122 50 127 51 128 56 C127 80 127 105 125 125 C124 133 118 139 110 137 C105 136 104 131 108 130 C114 130 116 126 116 120 C117 99 117 76 116 57 C116 52 115 51 118 51 Z"/>
+  </g>
+
+  <!-- thin hairline upstrokes for calligraphic contrast -->
+  <g stroke="url(#gold)" fill="none" stroke-linecap="round">
+    <!-- K upper arm (thin upstroke) -->
+    <path d="M48 90 C66 75 81 62 102 48" stroke-width="3.4"/>
+    <!-- T top bar (wavy thin stroke) -->
+    <path d="M97 54 C112 47 132 47 149 53" stroke-width="3.8"/>
+    <!-- entry flourish into K -->
+    <path d="M38 62 C43 55 47 51 51 50" stroke-width="2.4"/>
+  </g>
 </svg>

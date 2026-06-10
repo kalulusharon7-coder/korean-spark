@@ -157,7 +157,9 @@ export default function QuizPage() {
 
   useEffect(() => {
     if (!isLoaded) return;
-    if (!isSignedIn) {
+    // Lesson 1 is the free test-drive — its quiz is available without sign-in.
+    const isFree = lessonId === 1;
+    if (!isFree && !isSignedIn) {
       setLocation("/sign-in");
       return;
     }
@@ -231,6 +233,34 @@ export default function QuizPage() {
       setPhase("question");
     }
   }, [currentIdx, quiz]);
+
+  // Persist lesson completion to the server (per-account, cross-device) when the
+  // user passes every quiz question.
+  useEffect(() => {
+    if (phase !== "summary" || !quiz || !isSignedIn) return;
+    const passed =
+      results.length === quiz.totalQuestions && results.every((r) => r.passed);
+    if (!passed) return;
+    (async () => {
+      try {
+        const token = await getToken();
+        if (!token) return;
+        const avg = Math.round(
+          results.reduce((s, r) => s + r.score, 0) / (results.length || 1),
+        );
+        await fetch(`${API_BASE}/progress/update`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ lessonId, completed: true, score: avg }),
+        });
+      } catch {
+        /* progress is best-effort; localStorage keeps a local copy */
+      }
+    })();
+  }, [phase, quiz, results, isSignedIn, lessonId, getToken]);
 
   if (!isLoaded || loading) {
     return (

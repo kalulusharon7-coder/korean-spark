@@ -1,4 +1,4 @@
-import { useUser, useClerk } from "@clerk/react";
+import { useUser, useClerk, useAuth } from "@clerk/react";
 import { useLocation } from "wouter";
 import { useEffect, useState } from "react";
 
@@ -49,6 +49,7 @@ function getCompletedLessons(): Set<number> {
 
 export default function LessonsPage() {
   const { user, isLoaded } = useUser();
+  const { getToken } = useAuth();
   const { signOut } = useClerk();
   const [, setLocation] = useLocation();
   const [lessons, setLessons] = useState<LessonSummary[]>([]);
@@ -57,10 +58,37 @@ export default function LessonsPage() {
 
   const isSignedIn = isLoaded && !!user;
 
-  // Load completed lesson IDs from localStorage on mount
+  // Load completed lesson IDs from localStorage on mount (instant render)
   useEffect(() => {
     setCompletedIds(getCompletedLessons());
   }, []);
+
+  // Once signed in, hydrate completion from the server so progress follows the
+  // account across devices. Server state is merged with the local cache.
+  useEffect(() => {
+    if (!isSignedIn) return;
+    (async () => {
+      try {
+        const token = await getToken();
+        if (!token) return;
+        const r = await fetch(`${API_BASE}/progress`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!r.ok) return;
+        const data = (await r.json()) as {
+          progress?: { lessonId: number; completed: boolean }[];
+        };
+        const serverIds = (data.progress ?? [])
+          .filter((p) => p.completed)
+          .map((p) => p.lessonId);
+        if (serverIds.length > 0) {
+          setCompletedIds((prev) => new Set<number>([...prev, ...serverIds]));
+        }
+      } catch {
+        /* fall back to the localStorage cache */
+      }
+    })();
+  }, [isSignedIn, getToken]);
 
   useEffect(() => {
     fetch(`${API_BASE}/lessons`, { credentials: "include" })
